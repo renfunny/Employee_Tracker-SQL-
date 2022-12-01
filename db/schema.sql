@@ -20,7 +20,7 @@ CREATE TABLE roles (
     ON DELETE SET NULL
 );
 
-CREATE TABLE employee(
+CREATE TABLE employee (
     id INT AUTO_INCREMENT,
     first_name VARCHAR(30),
     last_name VARCHAR(30),
