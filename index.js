@@ -15,7 +15,7 @@ const db = mysql.createConnection(
 
 const mainMenu = () => {
   return inquirer
-    .createPromptModule([
+    .prompt([
       {
         type: `list`,
         name: `menu`,
@@ -39,7 +39,7 @@ const mainMenu = () => {
     ])
     .then((userInput) => {
       console.log(`Action Selected: ${userInput.menu}`);
-      switch (userInput.menu[0]) {
+      switch (userInput.menu) {
         case `View all employees`: //
           viewEmployees();
           break;
@@ -78,8 +78,6 @@ const mainMenu = () => {
         case `Quit`:
           db.end();
           break;
-        default:
-          db.end();
       }
     });
 };
@@ -87,7 +85,6 @@ const mainMenu = () => {
 // All VIEW functions
 const viewEmployees = () => {
   db.promise().query(`SELECT * FROM employee`, (err, results) => {
-    if (err) throw err;
     console.log(results);
     mainMenu();
   });
@@ -95,7 +92,6 @@ const viewEmployees = () => {
 
 const viewRoles = () => {
   db.promise().query(`SELECT * FROM role`, (err, results) => {
-    if (err) throw err;
     console.log(results);
     mainMenu();
   });
@@ -103,7 +99,6 @@ const viewRoles = () => {
 
 const viewDepartments = () => {
   db.promise().query(`SELECT * FROM department`, (err, results) => {
-    if (err) throw err;
     console.log(results);
     mainMenu();
   });
@@ -141,10 +136,12 @@ const addEmployee = () => {
     ])
     .then((userInput) => {
       const newEmployee = [userInput.firstName, userInput.lastName];
+      console.log(newEmployee);
 
       db.promise().query(
         `SELECT role.id and role.title FROM role`,
         (err, results) => {
+          console.log(results);
           const rolesChoices = results.map(({ id, title }) => ({
             name: title,
             value: id,
@@ -201,3 +198,4 @@ const addEmployee = () => {
       );
     });
 };
+mainMenu();
