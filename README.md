@@ -33,7 +33,7 @@ Once installed the app can be ran by using the command:
 
 ```
 
-For a video walkthrough as to how the application works and how it can be used please click the following link:
+For a video walkthrough as to how the application works and how it can be used please click the following link: [https://drive.google.com/file/d/1P6VEgg_Cvzf4Bk9NJeVpnEY-1LQr9Q4G/view](https://drive.google.com/file/d/1P6VEgg_Cvzf4Bk9NJeVpnEY-1LQr9Q4G/view)
 
 ## Usage
 
