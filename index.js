@@ -4,6 +4,7 @@ const cTable = require(`console.table`);
 
 require(`dotenv`).config();
 
+//Starts SQL connection
 const db = mysql.createConnection({
   host: `localhost`,
   user: `root`,
@@ -11,11 +12,13 @@ const db = mysql.createConnection({
   database: `employee_db`,
 });
 
+//Starts mainMenu() when connected
 db.connect(function () {
   console.log(`Connected to the employee_db database!`);
   mainMenu();
 });
 
+// Main Menu where diferent functions will be called depending on the user input
 const mainMenu = () => {
   return inquirer
     .prompt([
@@ -110,6 +113,7 @@ const viewDepartments = () => {
   });
 };
 
+// adds new department to the department table
 const addDepartment = () => {
   inquirer
     .prompt([
@@ -140,6 +144,7 @@ const addDepartment = () => {
     });
 };
 
+//adds new role to roles table
 const addRole = () => {
   inquirer
     .prompt([
@@ -171,11 +176,11 @@ const addRole = () => {
       },
     ])
     .then(({ name, salary }) => {
+      // stores the name and salary of the new role in an array for later use
       const newRole = [name, salary];
-      console.log(newRole);
 
       db.query(`SELECT * FROM department`, (err, results) => {
-        console.log(results);
+        //variable to hold the department's name and id so the user can pick in the inquirer
         const departmentChoices = [];
         results.forEach(({ department_name, id }) => {
           departmentChoices.push({
@@ -210,6 +215,7 @@ const addRole = () => {
     });
 };
 
+// adds new employee to employee table
 const addEmployee = () => {
   inquirer
     .prompt([
@@ -241,6 +247,7 @@ const addEmployee = () => {
       },
     ])
     .then(({ firstName, lastName }) => {
+      //stores names of new employee
       const newEmployee = [firstName, lastName];
       console.log(newEmployee);
 
@@ -270,6 +277,7 @@ const addEmployee = () => {
 
             db.query(`SELECT * FROM employee`, (err, results) => {
               if (err) throw err;
+              // adds the option to have no manager
               const managerList = [
                 {
                   name: `None`,
@@ -312,6 +320,7 @@ const addEmployee = () => {
     });
 };
 
+//updates role
 const updateRole = () => {
   db.query(`SELECT * FROM employee`, (err, results) => {
     if (err) throw err;
@@ -368,6 +377,7 @@ const updateRole = () => {
   });
 };
 
+// updates manager
 const updateManagers = () => {
   db.query(`SELECT * FROM employee`, (err, results) => {
     if (err) throw err;
@@ -422,6 +432,7 @@ const updateManagers = () => {
   });
 };
 
+// displays employees and their manager
 const viewEmployeesByManager = () => {
   db.query(
     `SELECT e.first_name AS 'Employee First Name', e.last_name AS 'Employee Last Name', m.first_name AS 'Manager First Name', m.last_name AS 'Manager Last Name'
@@ -437,6 +448,7 @@ const viewEmployeesByManager = () => {
   );
 };
 
+// displays employees and their department
 const viewEmployeesByDepartment = () => {
   db.query(
     `SELECT d.department_name AS 'Department', e.last_name AS 'Last Name', e.first_name AS 'First Name', r.title AS 'Role'
